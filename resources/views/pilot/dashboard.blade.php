@@ -32,7 +32,7 @@
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
     {{-- Assigned reservations --}}
     <div>
-        <h3 class="text-lg font-semibold text-gray-700 dark:text-white mb-3">🕒 Assigned</h3>
+        <h3 class="text-lg font-semibold text-gray-700 dark:text-white mb-3">🕒 Assigned waiting to start</h3>
 
         @forelse ($assignedReservations as $res)
             <div class="border p-4 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 mb-4">
