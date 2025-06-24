@@ -57,6 +57,8 @@ Route::middleware(['auth', 'role:pilot'])
         Route::get('/dashboard', [PilotDashboardController::class, 'index'])->name('dashboard');
         Route::get('/reservations/completed', [PilotDashboardController::class, 'completed'])->name('reservations.completed');
         Route::patch('/reservations/{reservation}/update-status', [PilotReservationController::class, 'updateStatus'])->name('reservations.updateStatus');
+        Route::get('/reservations', [PilotReservationController::class, 'index'])->name('reservations.index');
+        Route::get('/reservations/search', [PilotDashboardController::class, 'search'])->name('reservations.search');
     });
 
     // Client-only routes
