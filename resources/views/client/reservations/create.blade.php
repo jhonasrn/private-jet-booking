@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-client-layout>
     <x-slot name="header">
         <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
             New Reservation
@@ -70,4 +70,4 @@
             </form>
         </div>
     </div>
-</x-app-layout>
+</x-client-layout>
