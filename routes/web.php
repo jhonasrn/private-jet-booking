@@ -3,10 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminReservationController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Pilot\PilotDashboardController;
+use App\Http\Controllers\Pilot\PilotReservationController;
 use App\Http\Controllers\Client\ClientDashboardController;
 use App\Http\Controllers\Client\ClientReservationController;
 
@@ -18,10 +20,9 @@ use App\Http\Controllers\Client\ClientReservationController;
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
-
 Route::redirect('/', '/login');
-
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 
@@ -33,35 +34,32 @@ Route::middleware(['auth', 'role:admin'])
     ->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
-        // Reservations management
+        // Reservation management
         Route::get('/reservations', [AdminReservationController::class, 'index'])->name('reservations.index');
-        Route::get('/reservations/{reservation}', [AdminReservationController::class, 'show'])->name('reservations.show');
+        Route::get('/reservations/all', [AdminReservationController::class, 'all'])->name('reservations.all');
         Route::put('/reservations/{reservation}/assign', [AdminReservationController::class, 'assign'])->name('reservations.assign');
-        Route::put('/reservations/{reservation}/status', [AdminReservationController::class, 'updateStatus'])->name('reservations.status');
 
-        // User management (pilots, clients, etc.)
+        // User management
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
         Route::post('/users', [UserController::class, 'store'])->name('users.store');
+        Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+        Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+        Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+        Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
     });
 
-
-// Pilot-only routes
+    // Pilot-only routes
 Route::middleware(['auth', 'role:pilot'])
     ->prefix('pilot')
     ->name('pilot.')
     ->group(function () {
         Route::get('/dashboard', [PilotDashboardController::class, 'index'])->name('dashboard');
         Route::get('/reservations/completed', [PilotDashboardController::class, 'completed'])->name('reservations.completed');
-        Route::patch('/reservations/{reservation}/update-status', [PilotReservationController::class, 'updateStatus'])
-    ->name('reservations.updateStatus');
-
+        Route::patch('/reservations/{reservation}/update-status', [PilotReservationController::class, 'updateStatus'])->name('reservations.updateStatus');
     });
 
-
-// Client-only routes
-// This route group is for clients to manage their reservations and view their dashboard.
-// It ensures that only authenticated clients can access these routes.
+    // Client-only routes
 Route::middleware(['auth', 'role:client'])
     ->prefix('client')
     ->name('client.')
@@ -71,6 +69,7 @@ Route::middleware(['auth', 'role:client'])
         Route::post('/reservations', [ClientReservationController::class, 'store'])->name('reservations.store');
     });
 
+// Profile (shared)
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
