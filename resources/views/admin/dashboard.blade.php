@@ -15,7 +15,7 @@
         <div class="max-w-6xl mx-auto px-4 space-y-6">
 
             @if (session('success'))
-                <div class="mb-4 p-4 bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-100 rounded">
+                <div class="dark:bg-green-800 text-gray-900 dark:text-white rounded">
                     {{ session('success') }}
                 </div>
             @endif

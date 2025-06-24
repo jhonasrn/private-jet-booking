@@ -32,6 +32,9 @@ class AdminReservationController extends Controller
     {
         $allReservations = Reservation::with(['user', 'pilot', 'jet'])->latest()->get();
 
-        return view('admin.reservations.all', compact('allReservations'));
+        return view('admin.reservations.index', [
+            'reservations' => $allReservations,
+        ]);
+
     }
 }
