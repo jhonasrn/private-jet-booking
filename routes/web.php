@@ -12,6 +12,7 @@ use App\Http\Controllers\Pilot\PilotReservationController;
 use App\Http\Controllers\Client\ClientDashboardController;
 use App\Http\Controllers\Client\ClientReservationController;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Admin\Reports\FlightReportController;
 
 
 /*
@@ -36,21 +37,20 @@ Route::get('/email/verify', function () {
     return view('auth.verify');
 })->middleware(['auth'])->name('verification.notice');
 
-
-
 // Admin-only routes
 Route::middleware(['auth', 'role:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
+        // Dashboard
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
-        // Reservation management
+        // Reservations
         Route::get('/reservations', [AdminReservationController::class, 'index'])->name('reservations.index');
         Route::get('/reservations/all', [AdminReservationController::class, 'all'])->name('reservations.all');
         Route::put('/reservations/{reservation}/assign', [AdminReservationController::class, 'assign'])->name('reservations.assign');
 
-        // User management
+        // Users
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
         Route::post('/users', [UserController::class, 'store'])->name('users.store');
@@ -58,33 +58,40 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
         Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
         Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
+        // Reports
+        Route::prefix('reports')->name('reports.')->group(function () {
+            Route::get('/completed-flights', [FlightReportController::class, 'completed'])->name('completed');
+        });
+        Route::get('/reports/assigned-flights', [FlightReportController::class, 'assigned'])->name('reports.assigned');
+        Route::get('/reports/summary', [FlightReportController::class, 'summary'])->name('reports.summary');
     });
 
-    // Pilot-only routes
+// Pilot-only routes
 Route::middleware(['auth', 'role:pilot'])
-    ->prefix('pilot')
-    ->name('pilot.')
-    ->group(function () {
-        Route::get('/dashboard', [PilotDashboardController::class, 'index'])->name('dashboard');
-        Route::get('/reservations/completed', [PilotDashboardController::class, 'completed'])->name('reservations.completed');
-        Route::patch('/reservations/{reservation}/update-status', [PilotReservationController::class, 'updateStatus'])->name('reservations.updateStatus');
-        Route::get('/reservations', [PilotReservationController::class, 'index'])->name('reservations.index');
-        Route::get('/reservations/search', [PilotDashboardController::class, 'search'])->name('reservations.search');
-    });
+->prefix('pilot')
+->name('pilot.')
+->group(function () {
+    Route::get('/dashboard', [PilotDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/reservations/completed', [PilotDashboardController::class, 'completed'])->name('reservations.completed');
+    Route::patch('/reservations/{reservation}/update-status', [PilotReservationController::class, 'updateStatus'])->name('reservations.updateStatus');
+    Route::get('/reservations', [PilotReservationController::class, 'index'])->name('reservations.index');
+    Route::get('/reservations/search', [PilotDashboardController::class, 'search'])->name('reservations.search');
+});
 
-    // Client-only routes
+// Client-only routes
 Route::middleware(['auth', 'role:client'])
-    ->prefix('client')
-    ->name('client.')
-    ->group(function () {
-        Route::get('/dashboard', [ClientDashboardController::class, 'index'])->name('dashboard');
-        Route::get('/reservations/create', [ClientReservationController::class, 'create'])->name('reservations.create');
-        Route::post('/reservations', [ClientReservationController::class, 'store'])->name('reservations.store');
-    });
+->prefix('client')
+->name('client.')
+->group(function () {
+    Route::get('/dashboard', [ClientDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/reservations/create', [ClientReservationController::class, 'create'])->name('reservations.create');
+    Route::post('/reservations', [ClientReservationController::class, 'store'])->name('reservations.store');
+});
 
 // Profile (shared)
 Route::middleware(['auth'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
