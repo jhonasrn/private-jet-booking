@@ -52,9 +52,12 @@ Route::middleware(['auth', 'role:pilot'])
     ->name('pilot.')
     ->group(function () {
         Route::get('/dashboard', [PilotDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/reservations/completed', [PilotDashboardController::class, 'completed'])->name('reservations.completed');
+        Route::patch('/reservations/{reservation}/update-status', [PilotReservationController::class, 'updateStatus'])
+    ->name('reservations.updateStatus');
 
-        // You can add future features for pilots here
     });
+
 
 // Client-only routes
 // This route group is for clients to manage their reservations and view their dashboard.

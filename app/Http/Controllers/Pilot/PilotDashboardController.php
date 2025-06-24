@@ -3,16 +3,28 @@
 namespace App\Http\Controllers\Pilot;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Reservation;
-use App\Models\User;
 
 class PilotDashboardController extends Controller
 {
     public function index()
     {
-        $pendingReservations = Reservation::whereNull('pilot_id')->latest()->get();
-        $pilots = User::where('role', 'pilot')->get();
+        $activeReservations = Reservation::where('pilot_id', Auth::id())
+            ->where('status', 'assigned') // ou 'in_progress', se estiver usando esse status
+            ->latest()
+            ->get();
 
-        return view('admin.dashboard', compact('pendingReservations', 'pilots'));
+        return view('pilot.dashboard', compact('activeReservations'));
+    }
+
+    public function completed()
+    {
+        $completedReservations = Reservation::where('pilot_id', Auth::id())
+            ->where('status', 'completed')
+            ->latest()
+            ->get();
+
+        return view('pilot.reservations.completed', compact('completedReservations'));
     }
 }
