@@ -6,6 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reservation extends Model
 {
+    public const STATUSES = [
+        'pending',
+        'confirmed',
+        'in_progress',
+        'cancelled',
+        'completed',
+    ];
+
     protected $fillable = [
         'user_id',
         'pilot_id',
@@ -18,9 +26,18 @@ class Reservation extends Model
     ];
 
     /**
-     * Get the user associated with the reservation.
+     * Check if the given status is valid.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @param string $status
+     * @return bool
+     */
+    public static function isValidStatus(string $status): bool
+    {
+        return in_array($status, self::STATUSES);
+    }
+
+    /**
+     * User (client) who made the reservation.
      */
     public function user()
     {
@@ -28,9 +45,7 @@ class Reservation extends Model
     }
 
     /**
-     * Get the jet associated with the reservation.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * Jet associated with the reservation.
      */
     public function jet()
     {
@@ -38,13 +53,10 @@ class Reservation extends Model
     }
 
     /**
-     * Get the pilot associated with the reservation.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * Pilot assigned to the reservation.
      */
     public function pilot()
     {
         return $this->belongsTo(User::class, 'pilot_id');
     }
-
 }

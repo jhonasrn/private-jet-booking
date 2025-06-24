@@ -10,12 +10,19 @@ class PilotDashboardController extends Controller
 {
     public function index()
     {
-        $activeReservations = Reservation::where('pilot_id', Auth::id())
-            ->where('status', 'assigned') // ou 'in_progress', se estiver usando esse status
+        $assignedReservations = Reservation::where('pilot_id', Auth::id())
+            ->where('status', 'assigned')
+            ->with(['user', 'jet'])
             ->latest()
             ->get();
 
-        return view('pilot.dashboard', compact('activeReservations'));
+        $inProgressReservations = Reservation::where('pilot_id', Auth::id())
+            ->where('status', 'in_progress')
+            ->with(['user', 'jet'])
+            ->latest()
+            ->get();
+
+        return view('pilot.dashboard', compact('assignedReservations', 'inProgressReservations'));
     }
 
     public function completed()
