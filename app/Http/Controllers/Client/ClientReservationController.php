@@ -13,7 +13,8 @@ class ClientReservationController extends Controller
 {
     public function create()
     {
-        return view('client.reservations.create');
+        $jets = Jet::all();
+        return view('client.reservations.create', compact('jets'));
     }
     public function store(Request $request)
     {

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Reservation;
 
 class Jet extends Model
 {
@@ -10,4 +11,12 @@ class Jet extends Model
     {
         return $this->hasMany(Reservation::class);
     }
+
+    public function create()
+    {
+        $jets = Jet::all();
+        return view('client.reservations.create', compact('jets'));
+    }
 }
+
+
