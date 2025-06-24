@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-admin-layout>
     <x-slot name="header">
         <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
             Todas as Reservas
@@ -22,4 +22,4 @@
             <p class="text-sm text-gray-500 dark:text-gray-400">Nenhuma reserva registrada ainda.</p>
         @endforelse
     </div>
-</x-app-layout>
+</x-admin-layout>

@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-client-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
@@ -68,4 +68,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-client-layout>
