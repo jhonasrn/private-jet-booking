@@ -16,21 +16,32 @@ class Reservation extends Model
         'arrival_date',
         'status',
     ];
+
+    /**
+     * Get the user associated with the reservation.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Get the jet associated with the reservation.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function jet()
     {
         return $this->belongsTo(Jet::class);
     }
 
-    public function assignedReservations()
-    {
-        return $this->hasMany(Reservation::class, 'pilot_id');
-    }
-
+    /**
+     * Get the pilot associated with the reservation.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function pilot()
     {
         return $this->belongsTo(User::class, 'pilot_id');
