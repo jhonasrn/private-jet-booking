@@ -11,6 +11,8 @@ use App\Http\Controllers\Pilot\PilotDashboardController;
 use App\Http\Controllers\Pilot\PilotReservationController;
 use App\Http\Controllers\Client\ClientDashboardController;
 use App\Http\Controllers\Client\ClientReservationController;
+use Illuminate\Http\Request;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +27,15 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+Route::get('/email/verify', function () {
+    return view('auth.verify');
+})->middleware(['auth'])->name('verification.notice');
+
 
 
 // Admin-only routes
