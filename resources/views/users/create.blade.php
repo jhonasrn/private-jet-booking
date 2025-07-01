@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
-            Criar Novo Usuário
+            Create New User
         </h2>
     </x-slot>
 
@@ -10,7 +10,7 @@
             @csrf
 
             <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nome</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Name</label>
                 <input type="text" name="name" class="w-full rounded border-gray-300 dark:bg-gray-700 dark:text-white" required>
             </div>
 
@@ -20,27 +20,27 @@
             </div>
 
             <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Senha</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Password</label>
                 <input type="password" name="password" class="w-full rounded border-gray-300 dark:bg-gray-700 dark:text-white" required>
             </div>
 
             <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Confirme a Senha</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Confirm Password</label>
                 <input type="password" name="password_confirmation" class="w-full rounded border-gray-300 dark:bg-gray-700 dark:text-white" required>
             </div>
 
             <div class="mb-6">
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Papel</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Role</label>
                 <select name="role" class="w-full rounded border-gray-300 dark:bg-gray-700 dark:text-white" required>
-                    <option value="">Selecione...</option>
+                    <option value="">Select...</option>
                     <option value="admin">Admin</option>
-                    <option value="pilot">Piloto</option>
-                    <option value="client">Cliente</option>
+                    <option value="pilot">Pilot</option>
+                    <option value="client">Client</option>
                 </select>
             </div>
 
             <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
-                Criar Usuário
+                Create User
             </button>
         </form>
     </div>
